@@ -33,12 +33,11 @@ class WeatherApp(QMainWindow):
         self.city_combo.addItem("Дубай")
         self.city_combo.currentIndexChanged.connect(self.get_weather)
 
-        self.button = QPushButton('Отримати погоду', self)
-        self.button.move(10, 40)
-        self.button.clicked.connect(self.get_weather)
+
 
         self.update_button = QPushButton('Оновити', self)
-        self.update_button.move(150, 40)
+        self.update_button.setObjectName("update_button")
+        self.update_button.move(150, 50)
         self.update_button.clicked.connect(self.update_weather)
 
         self.weather_label = QLabel('', self)
@@ -89,5 +88,51 @@ class WeatherApp(QMainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = WeatherApp()
+    window.setStyleSheet("""
+     
+    QWidget {
+        background-color: #00FFF7;
+    }
+
+    QLabel {
+        font-size: 16px;
+    }
+
+    QPushButton {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 10px 0;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    QPushButton:hover {
+        background-color: #45a049;
+    }
+
+    QPushButton#update_button {
+        background-color: #008CBA;
+    }
+
+    QPushButton#update_button:hover {
+        background-color: #005f7f;
+    }
+
+    QComboBox {
+        font-size: 16px;
+    }
+
+    
+    
+
+
+ """)
+
     window.show()
     sys.exit(app.exec_())
