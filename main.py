@@ -12,43 +12,74 @@ class WeatherApp(QMainWindow):
         self.setWindowTitle('Weather')
         self.setGeometry(100, 100, 400, 300)
 
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
+        self.layout = QVBoxLayout()
+        self.central_widget.setLayout(self.layout)
+
+        self.central_widget.setStyleSheet("background-color: #F0E10F;")
+
         self.label_city = QLabel('Місто:', self)
-        self.label_city.move(10, 10)
+        self.layout.addWidget(self.label_city)
 
         self.city_combo = QComboBox(self)
-        self.city_combo.move(70, 10)
-        self.city_combo.addItem("Київ")
-        self.city_combo.addItem("Львів")
-        self.city_combo.addItem("Одеса")
-        self.city_combo.addItem("Харків")
-        self.city_combo.addItem("Варшава")
-        self.city_combo.addItem("Миколаїв")
-        self.city_combo.addItem("Ужгород")
-        self.city_combo.addItem("Новояворівськ")
-        self.city_combo.addItem("Прилбичі")
-        self.city_combo.addItem("Лондон")
-        self.city_combo.addItem("Нью-Йорк")
-        self.city_combo.addItem("Донецьк")
-        self.city_combo.addItem("Маріуполь")
-        self.city_combo.addItem("Дубай")
+        self.city_combo.addItems(["Київ", "Львів", "Одеса", "Харків", "Варшава", "Миколаїв", "Ужгород",
+                                  "Новояворівськ", "Прилбичі", "Лондон", "Нью-Йорк", "Донецьк", "Маріуполь", "Дубай"])
+        self.layout.addWidget(self.city_combo)
         self.city_combo.currentIndexChanged.connect(self.get_weather)
+        self.city_combo.setStyleSheet("""
+            QComboBox {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 5px;
+                border-radius: 3px;
+            }
+            QComboBox::drop-down {
+                border: none;
+            }
+        """)
 
-
+        self.button = QPushButton('Отримати погоду', self)
+        self.layout.addWidget(self.button)
+        self.button.clicked.connect(self.get_weather)
+        self.button.setStyleSheet("""
+            QPushButton {
+                background-color: #007bff;
+                color: #fff;
+                padding: 7px 10px;
+                border: none;
+                border-radius: 3px;
+            }
+            QPushButton:hover {
+                background-color: #0056b3;
+            }
+        """)
 
         self.update_button = QPushButton('Оновити', self)
-        self.update_button.setObjectName("update_button")
-        self.update_button.move(150, 50)
+        self.layout.addWidget(self.update_button)
         self.update_button.clicked.connect(self.update_weather)
+        self.update_button.setStyleSheet("""
+            QPushButton {
+                background-color: #28a745;
+                color: #fff;
+                padding: 7px 10px;
+                border: none;
+                border-radius: 3px;
+            }
+            QPushButton:hover {
+                background-color: #218838;
+            }
+        """)
 
         self.weather_label = QLabel('', self)
-        self.weather_label.setGeometry(10, 70, 380, 150)
+        self.layout.addWidget(self.weather_label)
         self.weather_label.setStyleSheet("font-size: 16px;")
 
         self.icon_label = QLabel(self)
-        self.icon_label.setGeometry(250, 10, 130, 130)
+        self.layout.addWidget(self.icon_label)
 
         self.last_update_label = QLabel('', self)
-        self.last_update_label.move(10, 230)
+        self.layout.addWidget(self.last_update_label)
 
         self.get_weather()
 
@@ -79,7 +110,7 @@ class WeatherApp(QMainWindow):
             formatted_date = now.strftime("%d.%m.%Y %H:%M:%S")
             self.last_update_label.setText(f"Останнє оновлення: {formatted_date}")
         else:
-            self.weather_label.setText('Місто не знайдено. Спробуйте ще раз.')
+            self.weather_label.setText('Місто не знайдено.Спробуйте ще раз.')
 
     def update_weather(self):
         self.get_weather()
@@ -88,51 +119,6 @@ class WeatherApp(QMainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = WeatherApp()
-    window.setStyleSheet("""
-     
-    QWidget {
-        background-color: #00FFF7;
-    }
-
-    QLabel {
-        font-size: 16px;
-    }
-
-    QPushButton {
-        background-color: #4CAF50;
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 10px 0;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-
-    QPushButton:hover {
-        background-color: #45a049;
-    }
-
-    QPushButton#update_button {
-        background-color: #008CBA;
-    }
-
-    QPushButton#update_button:hover {
-        background-color: #005f7f;
-    }
-
-    QComboBox {
-        font-size: 16px;
-    }
-
-    
-    
-
-
- """)
-
     window.show()
     sys.exit(app.exec_())
+
